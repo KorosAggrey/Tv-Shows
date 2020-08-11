@@ -21,7 +21,9 @@ class ShowAPI extends RESTDataSource {
 
     detailedShowReducer(show) {
         var seasons = Array.isArray(show._embedded.seasons) ? show._embedded.seasons.map(season => this.seasonReducer(season)) : [];
+        var episodes = Array.isArray(show._embedded.episodes) ? show._embedded.episodes.map(episode => this.episodeReducer(episode)) : [];
         var crew = Array.isArray(show._embedded.crew) ? show._embedded.crew.map(crew => this.crewReducer(crew)) : [];
+
         return {
             id: show.id || 0,
             name: show.name,
@@ -32,6 +34,7 @@ class ShowAPI extends RESTDataSource {
             rating: show.rating.average,
             summary: show.summary,
             seasons: seasons,
+            episodes: episodes,
             crew: crew
         }
     }
@@ -41,6 +44,17 @@ class ShowAPI extends RESTDataSource {
             id: season.id,
             number: season.number,
             episodes: season.episodeOrder
+        }
+    }
+
+    episodeReducer(episode) {
+        return {
+            id: episode.id,
+            name: episode.name,
+            airdate: episode.airdate,
+            airstamp: episode.airstamp,
+            airtime: episode.airtime,
+            summary: episode.summary,
         }
     }
 
@@ -67,7 +81,7 @@ class ShowAPI extends RESTDataSource {
     }
 
     async getShowById({ showId }) {
-        const response = await this.get(`shows/${showId}?embed[]=seasons&embed[]=crew`);
+        const response = await this.get(`shows/${showId}?embed[]=episodes&embed[]=seasons&&embed[]=cast`);
         return this.detailedShowReducer(response);
     }
 

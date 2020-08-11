@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { gql, useQuery } from '@apollo/client';
-import { Tabs, Tab, Row, Col, Nav } from 'react-bootstrap';
+import { Tabs, Tab, Row, Col, Nav, Collapse, Button} from 'react-bootstrap';
 import {
     Header
 } from "../../Components/Index";
@@ -11,7 +11,7 @@ const Details = ({
         params: { id },
     },
 } ) => {
-    console.log(id)
+    const [open, setOpen] = useState(false);
     const showId = parseInt(id);
     const GET_SHOW = gql`
     query ShowDetails($showId: Int!) {
@@ -28,6 +28,15 @@ const Details = ({
             id
             number
             episodes
+            }
+            episodes{
+                name
+                id
+                airdate
+                airstamp
+                airtime
+                image_medium
+                summary
             }
             crew {
             type
@@ -51,7 +60,9 @@ const Details = ({
         var loading = true;
     }
 
-    console.log(data)
+    /* const iconClass = this.open
+        ? 'fa-angle-double-down'
+        : 'fa-angle-double-right'; */
     return (
         <>
             <Header></Header>  
@@ -94,7 +105,7 @@ const Details = ({
                                 </div>
                                 <div className="col-12 col-lg-6">
                                     <div className="card__description">
-                                        {data.show.summary}
+                                    {data.show.summary.replace(/<(.|\n)*?>/g, '')}
                                     </div>
                                 </div>
                             </div>
@@ -120,8 +131,8 @@ const Details = ({
                                 </ul> */}
 
 
-                                <Tabs defaultActiveKey="content__tabs" className="nnav nav-tabs content__tabs">
-                                    <Tab eventKey="home" title="Seasons" className="nav-item" style={{ marginTop: "5px"}}>
+                                <Tabs defaultActiveKey="home" className="nnav nav-tabs content__tabs">
+                                    <Tab eventKey="home" value='1' title="Seasons" className="nav-item active" style={{ marginTop: "5px"}}>
                                         <div className="we">
                                             <div className="c">
                                                 <div className="comments">
@@ -142,6 +153,26 @@ const Details = ({
                                                     }
                                                 </div>
                                             </div>
+                                        </div>
+                                    </Tab>
+                                    <Tab eventKey="episodes" value='1' title="Episodes" style={{ marginTop: "5px" }}>
+                                        <div className="comments">
+                                            {
+                                                loading ? "Loading..." : data ?
+                                                    <table className="table table-dark">
+                                                        <tbody>
+                                                            {
+                                                                data.show.episodes.map(function (episode, key) {
+                                                                    return <tr key={key}>
+                                                                        <td>Name: {episode.name}</td>
+                                                                        <td>Air Date: {episode.airdate}</td>
+                                                                        <td>Air Time: {episode.airtime}</td>
+                                                                    </tr> 
+                                                                })
+                                                            }
+                                                        </tbody>
+                                                    </table> : "No data"
+                                            }
                                         </div>
                                     </Tab>
                                 </Tabs>

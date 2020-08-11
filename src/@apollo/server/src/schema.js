@@ -8,6 +8,7 @@ type Show {
     premiered: String
     runtime: Int
     seasons: [Seasons]
+    episodes:[Episodes]
     crew: [Crew]
     image(size: PosterSize): String
     rating: String
@@ -29,6 +30,16 @@ type Seasons {
     id: Int!
     number: Int
     episodes: Int
+}
+
+type Episodes {
+    name: String
+    id: Int!
+    airdate: String
+    airstamp: String
+    airtime: String
+    image_medium: String
+    summary: String
 }
 
 type User {

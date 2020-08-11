@@ -59,8 +59,6 @@ const Dashboard = () => {
     //if (loading) return <Loading />;
     if (error) return <p>ERROR</p>;
     if (!data) return <p>Not found</p>;
-
-  console.log(data.shows)
   const activePage = 1;
 
   /* useEffect(() => {
@@ -79,9 +77,7 @@ const Dashboard = () => {
 
   const onSubmit = (data, e) => {
     e.preventDefault();
-    let url = 'http://api.example.com/results?q=' + data.search + '&json=1';
     history.push("movies/library?q=" + data.search);
-    console.log(url)
   };
  
 
