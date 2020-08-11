@@ -1,0 +1,18 @@
+.container {
+  height: 100vh;
+}
+
+.registrationFormContainer {
+  width: 24rem;
+}
+
+.background {
+  background-image: url(../../movies/img/section/section.jpg)
+}
+
+.errorMessage {
+  font-size: 12px;
+  letter-spacing: 0.05rem;
+  padding-left: 0.25rem;
+  color: red;
+}
